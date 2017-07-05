@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Controle Redação GameBlast</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    <link href='http://www.gameblast.com.br/favicon.ico' rel='icon' type='image/x-icon'/>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+      }
+
+      .container {
+        margin: 0 auto;
+        max-width: 1000px;
+      }
+      .container > hr {
+        margin: 60px 0;
+      }
+      .fakelink {
+        color: #337ab7;
+      }
+
+      .fakelink:focus, .fakelink:hover {
+        color: #23527c;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css" integrity="sha256-WCepSgH+6btbMzGwDvuwgydfylekQDuOxWZY3wNL4cM=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/css/bootstrap-datepicker3.min.css" integrity="sha256-BGGnKs7D5nLQOdxT3FlL/zrrzQySV6F99F0hvZTBYgw=" crossorigin="anonymous" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <h1>Controle Redação GameBlast</h1>
+      <br/>
+
+      <form>
+        <div class="panel panel-default">
+          <div class="panel-heading">Opções de pesquisa</div>
+          <div class="panel-body">
+            <label for="botoesBlasts">Blast</label>
+        		<div class="btn-group-lg" role="group" aria-label="..." id="botoesBlasts">
+        		  <!--<button type="button" class="btn btn-default btn-sm btn-primary" id="GB" onClick="recuperaDados('GB',this,'','')">GameBlast</button>
+        		  <button type="button" class="btn btn-default btn-sm" id="NB" onClick="recuperaDados('NB',this,'','')">Nintendo Blast</button>
+        		  <button type="button" class="btn btn-default btn-sm" id="PSB" onClick="recuperaDados('PSB',this,'','')">PlayStation Blast</button>
+        		  <button type="button" class="btn btn-default btn-sm" id="XB" onClick="recuperaDados('XB',this,'','')">Xbox Blast</button>-->
+
+              <label class="radio-inline"><input id="GB" type="radio" name='tipoBlastRadio' checked="true">GameBlast</label>
+              <label class="radio-inline"><input id="NB" type="radio" name='tipoBlastRadio'>Nintendo Blast</label>
+              <label class="radio-inline"><input id="PSB" type="radio" name='tipoBlastRadio'>PlayStation Blast</label>
+              <label class="radio-inline"><input id="XB" type="radio" name='tipoBlastRadio'>Xbox Blast</label>
+        		</div>
+
+            <br/>
+            <label for="tipoConteudo">Tipo de conteúdo</label>
+            <div class="btn-group-lg" role="group" aria-label="..." id="tipoConteudo">
+              <label class="radio-inline"><input id="inputNoticias" type="radio" name='optradio' checked="true">Notícias</label>
+              <label class="radio-inline"><input type="radio" name='optradio'>Destaques</label>
+            </div>
+            <br/>
+
+            <div class="container">
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <div class="form-group">
+                            <label for="datepicker">Intervalo</label>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="input-sm form-control" name="start" id="datainicio" required="true"/>
+                                <span class="input-group-addon">até</span>
+                                <input type="text" class="input-sm form-control" name="end" id="datafim" required="true"/>
+                            </div>
+                            <br/>
+                            <input type="submit" class="btn btn-default" onClick="pesquisarIntervalo(event)" value="Pesquisar"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+
+      <br/>
+      <h3>Resultado</h3>
+      <br/>
+      <div class="container">
+        <div class="row">
+          <div class='col-sm-6'>
+          <label for="campoBusca">Filtrar por nome</label>
+          <input type="text" class="input-sm form-control" id="campoBusca"/>
+        </div>
+      </div>
+      <br/>
+      <table class="table table-hover table-condensed">
+        <tr>
+          <th>Redator</th>
+		  <th>Matérias</th>
+          <th>Pontuação Total</th>
+        </tr>
+        <tbody id="tabela">
+        </tbody>
+      </table>
+
+    </div> <!-- /container -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/js/bootstrap-datepicker.min.js" integrity="sha256-FOV0q1Ks/eXoUwtkcN6OxWV4u9OSq7LDomNYnfF/0Ys=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/locales/bootstrap-datepicker.pt-BR.min.js" integrity="sha256-QN6KDU+9DIJ/9M0ynQQfw/O90ef0UXucGgKn0LbUtq4=" crossorigin="anonymous"></script>
+    <script>
+
+
+    var itens = new Array();
+    var urlNoticias = '/posts/summary/-/~Not%C3%ADcia?max-results=1000&alt=json'
+    var urlDestaques = '/posts/summary/-/~Destaque?max-results=1000&alt=json'
+    var dataInicial = '&published-min=2017-06-25T00:00:00-03:00';
+    var dataFinal = '&published-max=2017-07-25T00:00:00-03:00';
+    var urlGB = 'https://www.blogger.com/feeds/4548646345780114575';
+    var urlNB = 'https://www.blogger.com/feeds/5475675974957417512';
+    var urlPSB = 'https://www.blogger.com/feeds/522137286616670147';
+    var urlXB = 'https://www.blogger.com/feeds/8538877173810223619';
+    var blastSelecionado = 'GB'
+    var redatores = new Array();
+    var verificaRedator = new Array();
+
+
+
+    function getJsonFeed(strBlastId){  
+      //Encapsulando chamada JSON com deferred
+      chamada = $.Deferred(function (def) {
+        $.ajax({
+          url: strBlastId,
+          type: 'get',
+          dataType: "jsonp",
+          async: true,
+          success: function(json){
+            $(json.feed.entry).each(function(i, entry){
+              itens.push(entry);
+            });
+            def.resolve(); //Resolvendo o defered, dizendo que terminou a chamada JSON
+          }
+        })
+      }).promise();
+      return chamada;
+    }
+
+    function buscaElemento(prop, valor) {
+    for (var i = 0, len = redatores.length; i < len; i++)
+        if (redatores[i] && redatores[i][prop] === valor) return redatores[i];
+    }
+
+    function formataDados(pontos){
+      jQuery.each(itens,function(i,entry){
+        var redator = {
+          nome:"",
+          links:[]
+        };
+        redator.nome = entry.author[0].name.$t;
+        verificaRedator = buscaElemento("nome",redator.nome);
+
+        var link={
+          titulo:"",
+          url:"",
+          pontos:0
+        };
+
+        link.pontos = pontos;
+        link.titulo = entry.title.$t;
+        jQuery.each(entry.link,function(i,url){
+          if(url.rel=="alternate"){
+            link.url = url.href;
+            return false;
+          }
+        });
+        link.data = entry.published.$t;
+
+        if("undefined" === typeof verificaRedator){
+          redator.links.push(link);
+          redatores.push(redator);
+        }
+        else{
+          verificaRedator.links.push(link);
+        }
+      });
+      redatores.sort(asc_sort);
+    }
+
+    function asc_sort(a, b){
+        return (b.nome.toUpperCase()) < (a.nome.toUpperCase()) ? 1 : -1;    
+    }
+
+    function montaTabela(){
+      tabela = $("#tabela");
+      jQuery.each(redatores,function(i,redator){
+        var links = "<tr id='info"+i+"' style='display:none !important'><td colspan='3'><table class='table table-hover table-condensed'><tr id='infoh"+i+"'><th>Data</th><th>Matéria</th><th>Pontuação</th></tr>";
+        var pontuacao = 0;
+        jQuery.each(redator.links,function(i,link){
+          links += "<tr id='infol"+i+"'><td>"+formataData(link.data)+"</td><td><a href='"+link.url+"'>"+link.titulo+"</a></td><td>"+link.pontos+"</td></tr>";
+          pontuacao += link.pontos;
+        });
+        links += "</table></td></tr>";
+        tabela.append("<tr><td onClick='exibeDetalhes("+i+")' class='fakelink'>"+redator.nome+"</td><td>"+redator.links.length+"</td><td>"+pontuacao+"</td></tr>");
+        //$("#info"+i+"").bind("click","toggle()");
+        tabela.append(links);
+      });
+    }
+
+    function exibeDetalhes(id){
+      var elemento = "#info"+id;
+      $(elemento).toggle();
+    }
+
+    function formataData(data){
+      data = data.substring(0,data.indexOf("-03:00"));
+      var d = new Date(data);
+      dataFormatada = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+      return dataFormatada;
+    }
+
+    function converteDataParaUTC(data){
+      el = data.split('/');
+      if(el[0].length<2) el[0] = '0'+el[0];
+      if(el[1].length<2) el[1] = '0'+(el[1]-1);
+      return el[2]+'-'+el[1]+'-'+el[0]+'T00:00:00-03:00';
+    }
+
+    function recuperaDados(blast,dataInicio,dataFim){
+      var pontoBase = 2;
+      var chamada = null
+      var url = "";
+      redatores = [];
+      itens = [];
+      tipoConteudo = 1;
+      blastSelecionado = blast;
+
+      /*if(el!=""){
+        $('.btn').removeClass('btn-primary');
+        $(el).addClass('btn-primary');
+      }*/
+
+      switch(blast){
+        case 'NB':
+          url += urlNB;
+          break;
+        case 'PSB':
+          url += urlPSB;
+          break;
+        case 'XB':
+          url += urlXB;
+          break;
+        default:
+          url += urlGB;
+      }
+
+      $("#tabela").empty()
+      if(document.getElementById("inputNoticias").checked){ //Noticias
+        url += urlNoticias;
+      }
+      else { //Destaques
+        pontoBase = 4;
+        url += urlDestaques;
+      }
+
+      if(dataInicio.length>0){
+        url += '&published-min='+converteDataParaUTC(dataInicio);
+        url += '&published-max='+converteDataParaUTC(dataFim);
+      }
+      else{
+        url += dataInicial;
+        url += dataFinal;
+      }
+
+      chamada = getJsonFeed(url);
+      $.when(chamada).done(function() { 
+        formataDados(pontoBase);
+        montaTabela();
+      });
+    }
+
+    function pesquisarIntervalo(e){
+      e.preventDefault();
+      dInicial = document.getElementById("datainicio").value;
+      dFinal = document.getElementById("datafim").value;
+      blast = $("#botoesBlasts input:checked").attr('id');
+      recuperaDados(blast,dInicial,dFinal);
+    }
+
+    $(document).ready(function () {
+      
+      $('.input-daterange').datepicker({
+        format: "dd/mm/yyyy",
+        clearBtn: true,
+        language: "pt-BR",
+        todayBtn: true,
+        daysOfWeekHighlighted: "0,6"
+      });
+
+      d = new Date();
+      dataTemp = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+      el = dataTemp.split('/');
+      if(el[0].length<2) el[0] = '0'+el[0];
+      if(el[1].length<2) el[1] = '0'+(el[1]);
+      dataTemp = el[0]+"/"+el[1]+"/"+el[2];
+      document.getElementById("datafim").value = dataTemp;
+      d.setDate(d.getDate() - 7);
+      dataTemp = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
+      el = dataTemp.split('/');
+      if(el[0].length<2) el[0] = '0'+el[0];
+      if(el[1].length<2) el[1] = '0'+(el[1]);
+      dataTemp = el[0]+"/"+el[1]+"/"+el[2];
+      document.getElementById("datainicio").value = dataTemp;
+      
+      recuperaDados("GB","","");
+
+    });
+
+    $("#campoBusca").keyup(function () {
+        var rows = $("#tabela").find("tr:not([id*=info])").hide();
+        if (this.value.length) {
+            var data = this.value.toUpperCase().split(" ");
+            $.each(data, function (i, v) {
+                rows.filter(":icontains('" + v + "'):not([id*=info])").show();
+            });
+        } else rows.show();
+      });
+
+    jQuery.expr[':'].icontains = function(a, i, m) {
+      return jQuery(a).text().toUpperCase()
+          .indexOf(m[3].toUpperCase()) >= 0;
+    };
+    </script>
+  </body>
+</html>
