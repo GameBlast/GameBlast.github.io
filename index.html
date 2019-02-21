@@ -228,9 +228,11 @@
     }
 
     function formataData(data){
-      data = data.substring(0,data.indexOf("-03:00"));
-      if(data.length==0){
-        data = data.substring(0,data.indexOf("-02:00"));
+      if(data.indexOf("-03:00")>0){
+	data = data.substring(0,data.indexOf("-03:00"));       
+      }
+      else{
+	 data = data.substring(0,data.indexOf("-02:00"));
       }
       var d = new Date(data);
       dataFormatada = d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear();
