@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GameBlast - Review list</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    a {
+      color: blue;
+      text-decoration: none;
+    }
+    a:visited {
+      color: purple;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    pre {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    #loading {
+      font-size: 16px;
+      font-weight: bold;
+      color: #555;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Review list</h2> <!-- 🔹 Alterado para h2 e texto atualizado -->
+  <div id="loading">Loading...</div>
+  <div id="post-list"></div>
+
+  <script>
+    $(document).ready(function () {
+      const feedUrl = "https://www.blogger.com/feeds/4548646345780114575/posts/default/-/An%C3%A1lise?max-results=30&alt=json";
+
+      function fetchPosts() {
+        let deferred = $.Deferred();
+
+        $.ajax({
+          url: feedUrl,
+          method: "GET",
+          dataType: "jsonp",
+          async: true,
+        }).done(function (data) {
+          deferred.resolve(data);
+        }).fail(function (xhr, status, error) {
+          deferred.reject(error);
+        });
+
+        return deferred.promise();
+      }
+
+      function processPosts(data) {
+        const entries = data.feed.entry || [];
+        const $list = $("#post-list");
+        const $loading = $("#loading");
+
+        if (entries.length === 0) {
+          $loading.text("No posts found.");
+          return;
+        }
+
+        $loading.hide();
+
+        const monthNames = [
+          "January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+        ];
+
+        entries.forEach(entry => {
+          const rawDate = new Date(entry.published.$t);
+          const formattedDate = `${monthNames[rawDate.getMonth()]} ${rawDate.getDate()}, ${rawDate.getFullYear()}`;
+          const link = entry.link?.[4]?.href || "#";
+          const contentHTML = entry.content?.$t || "";
+
+          const $tempDiv = $("<div>").html(contentHTML);
+          const $veredictDiv = $tempDiv.find("#veredict");
+
+          if ($veredictDiv.length) {
+            const jogo = $veredictDiv.find("#jogo").text().trim();
+            const nota = $veredictDiv.find("#nota").text().trim();
+            const plataforma = $veredictDiv.find("#plataforma").text().trim();
+            const resumo = $veredictDiv.find("#resumo").text().trim();
+
+            if (jogo && nota && plataforma && resumo) {
+              const postHtml = `
+                <pre><b>${jogo}</b> - ${plataforma} - ${nota}
+${formattedDate}
+<a href="${link}" target="_blank">${link}</a>
+${resumo}</pre>
+              `;
+              $list.append(postHtml);
+            }
+          }
+        });
+      }
+
+      fetchPosts()
+        .done(function (data) {
+          processPosts(data);
+        })
+        .fail(function (error) {
+          $("#loading").text("Error loading posts.");
+          console.error("Error fetching posts:", error);
+        });
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+</body>
+</html>
