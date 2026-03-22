@@ -197,7 +197,7 @@ function montaTabela(ano, mes) {
                dataMes.startOf('isoWeek').date() ==
                moment(formataData(linke.data), 'DD/MM/YYYY')
                   .startOf('isoWeek')
-                  .date()
+                  .date() && dataMes.month() === moment(formataData(linke.data), 'DD/MM/YYYY').month()
             ) {
                linke.tipo == 'N' ? qtdNoticias++ : qtdDestaques++;
             }
