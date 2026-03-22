@@ -35,13 +35,13 @@ body {
 .panel-heading {
    font-weight: bold;
    color: #fff !important;
-   background-color: #e87400 !important;
+   background-color: #ff9900 !important;
 }
 
 .panel-heading-nb {
    font-weight: bold;
    color: #fff !important;
-   background-color: #980012 !important;
+   background-color: #e60012 !important;
 }
 
 #resultado {
