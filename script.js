@@ -250,7 +250,7 @@ function criaDropdowns() {
       if (moment().month() == i) {
          dropMes.insertAdjacentHTML(
             'beforeend',
-            `<option value='${i}' selected='true'>${meses[i]}</option>`
+            `<option value='${i}' selected='true'>${meses[i].toLowerCase()}</option>`
          );
       } else {
          dropMes.insertAdjacentHTML(
